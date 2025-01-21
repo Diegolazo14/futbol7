@@ -1,6 +1,7 @@
 const fs = require("fs");
 const express = require("express");
 const cors = require("cors");
+const path = require("path");
 
 const app = express();
 app.use(cors());
@@ -33,5 +34,16 @@ app.post("/export-csv", (req, res) => {
     });
 });
 
+// Servir archivos estáticos del frontend
+const publicPath = path.join(__dirname, "public"); // Cambia "public" si los archivos están en otra carpeta
+app.use(express.static(publicPath));
+
+// Ruta para la raíz
+app.get("/", (req, res) => {
+    res.sendFile(path.join(publicPath, "index.html"));
+});
+
+
 // Iniciar servidor
+const PORT = process.env.PORT || 3000;
 app.listen(3000, () => console.log("Servidor corriendo en http://localhost:3000"));
