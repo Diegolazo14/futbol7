@@ -34,8 +34,8 @@ app.post("/export-csv", (req, res) => {
     });
 });
 
-// Servir archivos estáticos del frontend
-const publicPath = path.join(__dirname, "public"); // Cambia "public" si los archivos están en otra carpeta
+// Servir archivos estáticos desde la carpeta "public" en la raíz
+const publicPath = path.join(__dirname, "../public"); // Cambia "public" si los archivos están en otra carpeta
 app.use(express.static(publicPath));
 
 // Ruta para la raíz
