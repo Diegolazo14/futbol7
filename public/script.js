@@ -211,24 +211,33 @@ async function exportCSV() {
             body: JSON.stringify({ stats })
         });
 
-        if (response.ok) {
-            const blob = await response.blob();
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement("a");
-            a.href = url;
-            a.download = "stats_export.csv";
-            document.body.appendChild(a);
-            a.click();
-            a.remove();
-            alert("Archivo CSV exportado exitosamente.");
-        } else {
-            alert("Error al exportar los datos.");
+
+        if (!response.ok) {
+            throw new Error("Error al exportar los datos.");
         }
+
+        const blob = await response.blob();
+
+        // Crear un enlace para descargar el archivo
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "stats_export.csv";
+
+        // Manejo adicional para móviles
+        if (navigator.userAgent.toLowerCase().includes("mobile")) {
+            a.target = "_self"; // Forzar descarga en móviles
+        }
+
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+
+        alert("Archivo CSV exportado exitosamente.");
     } catch (error) {
         console.error("Error al exportar los datos:", error);
-        alert("Error al exportar los datos.");
+        alert("Error al exportar los datos. Por favor, intenta nuevamente.");
     }
 }
-
 // Conectar el botón al evento
 document.getElementById("export-csv").addEventListener("click", exportCSV);

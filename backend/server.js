@@ -4,7 +4,11 @@ const cors = require("cors");
 const path = require("path");
 
 const app = express();
-app.use(cors());
+app.use(cors({
+    origin: "*", // Permitir todas las solicitudes
+    methods: ["GET", "POST"], // Métodos permitidos
+    allowedHeaders: ["Content-Type"]
+}));
 app.use(express.json());
 
 // Ruta para exportar estadísticas como CSV
@@ -33,7 +37,6 @@ app.post("/export-csv", (req, res) => {
         fs.unlinkSync(filePath);
     });
 });
-
 // Servir archivos estáticos desde la carpeta "public" en la raíz
 const publicPath = path.join(__dirname, "../public"); // Cambia "public" si los archivos están en otra carpeta
 app.use(express.static(publicPath));
