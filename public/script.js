@@ -205,7 +205,7 @@ document.getElementById("reset-all").addEventListener("click", resetAll);
 
 async function exportCSV() {
     try {
-        const response = await fetch("http://localhost:3000/export-csv", {
+        const response = await fetch("https://futbol7.onrender.com", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ stats })
@@ -218,26 +218,39 @@ async function exportCSV() {
 
         const blob = await response.blob();
 
+         // Detectar el dispositivo y navegador
+         const isMobile = /iPhone|iPad|Android/i.test(navigator.userAgent);
+
+         if (isMobile) {
+
         // Crear un enlace para descargar el archivo
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
         a.download = "stats_export.csv";
-
-        // Manejo adicional para móviles
-        if (navigator.userAgent.toLowerCase().includes("mobile")) {
-            a.target = "_self"; // Forzar descarga en móviles
-        }
-
         document.body.appendChild(a);
         a.click();
-        a.remove();
+        document.body.removeChild(a);
 
-        alert("Archivo CSV exportado exitosamente.");
-    } catch (error) {
-        console.error("Error al exportar los datos:", error);
-        alert("Error al exportar los datos. Por favor, intenta nuevamente.");
-    }
+        // Liberar el objeto URL
+        window.URL.revokeObjectURL(url);
+    } else {
+// Manejo estándar para escritorio
+const url = window.URL.createObjectURL(blob);
+const a = document.createElement("a");
+a.href = url;
+a.download = "stats_export.csv";
+document.body.appendChild(a);
+a.click();
+a.remove();
 }
+
+alert("Archivo CSV exportado exitosamente.");
+} catch (error) {
+console.error("Error al exportar los datos:", error);
+alert("Error al exportar los datos. Por favor, intenta nuevamente.");
+}
+}
+    
 // Conectar el botón al evento
 document.getElementById("export-csv").addEventListener("click", exportCSV);
