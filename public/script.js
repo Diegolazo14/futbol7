@@ -205,7 +205,7 @@ document.getElementById("reset-all").addEventListener("click", resetAll);
 
 async function exportCSV() {
     try {
-        const response = await fetch("https://futbol7.onrender.com", {
+        const response = await fetch("https://futbol7.onrender.com/export-csv", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ stats })
