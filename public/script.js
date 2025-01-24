@@ -254,3 +254,34 @@ alert("Error al exportar los datos. Por favor, intenta nuevamente.");
     
 // Conectar el botón al evento
 document.getElementById("export-csv").addEventListener("click", exportCSV);
+
+import { auth } from "./firebase.js";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+
+// Registro
+document.getElementById("register-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const email = document.getElementById("register-email").value;
+    const password = document.getElementById("register-password").value;
+
+    try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        alert(`Usuario registrado: ${userCredential.user.email}`);
+    } catch (error) {
+        alert(`Error en el registro: ${error.message}`);
+    }
+});
+
+// Inicio de sesión
+document.getElementById("login-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const email = document.getElementById("login-email").value;
+    const password = document.getElementById("login-password").value;
+
+    try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        alert(`Bienvenido: ${userCredential.user.email}`);
+    } catch (error) {
+        alert(`Error al iniciar sesión: ${error.message}`);
+    }
+});
