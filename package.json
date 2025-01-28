@@ -9,7 +9,7 @@
   },
   "scripts": {
     "start": "node dist/server.js",
-    "build": "vite build && copy server.js dist\\server.js",
+    "build": "npx vite build && copy server.js dist\\server.js",
     "dev": "npx vite",
     "preview": "npx vite preview",
     "test": "echo \"Error: no test specified\" && exit 1"

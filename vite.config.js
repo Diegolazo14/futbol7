@@ -1,19 +1,20 @@
 import { defineConfig } from "vite";
+import path from "path";
 
 export default defineConfig({
-  root: ".", // Carpeta raíz del proyecto
-  base: "/", // Configuración de la ruta base para despliegue
-  server: {
-    port: 5173, // Puerto por defecto de Vite
-  },
+  root: ".", // Define la raíz del proyecto como "public"
   build: {
-    outDir: "dist", // Directorio donde se guardará la compilación
+    outDir: "dist", // Se asegura de que los archivos vayan a "dist/"
+    emptyOutDir: true, // Limpia la carpeta "dist" antes de cada build
     rollupOptions: {
       input: {
-        main: "./public/index.html", // Ruta al archivo HTML principal
-        match: "./public/match.html", // Ruta a otros archivos HTML
-        profile: "./public/profile.html", // Ruta a otros archivos HTML
-      },
-    },
+        main: path.resolve(__dirname, "public/index.html"),  // Asegura que index.html se compile
+        match: path.resolve(__dirname, "public/match.html"),
+        profile: path.resolve(__dirname, "public/profile.html")
+      }
+    }
   },
+  server: {
+    port: 5173 // Puerto para desarrollo local
+  }
 });
